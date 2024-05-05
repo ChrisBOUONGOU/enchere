@@ -1,0 +1,37 @@
+{% block title %}Verifier la commande{% endblock %}
+
+{% block body %}
+
+
+<div class="d-none d-lg-block bg-secondary position-fixed top-0 start-0 h-100" style="width: 52.5%;"></div>
+<div class="container position-relative zindex-2 pt-5 pb-lg-5 pb-md-4 pb-2">
+   
+</div>
+
+<div>
+{{ transporter.title }}
+{{ transporter.content }}
+{{ (transporter.price / 100) | number_format(2,',','.') }}
+{{ delivery | raw }}
+{{ recapCard | length }}
+</div>
+{% set total = null %}
+{% for product in recapCard %}
+{{ product.product.nom }}
+<p>{{ (product.product.prix / 100) | number_format(2,',','.') }}</p>
+<a href="{{ path('card_remove', {id: product.product.id}) }}">remove</a>
+{% set total = total + (product.product.prix * product.quantity) %}
+{% endfor %}
+<p>{{ (total / 100) | number_format(2,',','.') }}</p>
+{{ (transporter.price / 100) | number_format(2,',','.') }}
+{{ (total / 100 + (transporter.price / 100)) | number_format(2,',','.')}}
+<div>
+{% if method == 'stripe' %}
+
+<form method="post" action="{{ path('payment_stripe', {reference: reference})}}">
+   <button type="submit" class="btn btn-primary">pay by strpe | {{ (total / 100 + (transporter.price / 100)) | number_format(2,',','.')}}</button>
+</form>
+{% endif %}
+</div>
+
+{% endblock %}

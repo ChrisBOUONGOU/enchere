@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Produits {% endblock %}
+
+{% block body %}
+<div class="row">
+    {% for produit in produits %}
+    <div class="col-md-4">
+    <div class="card">
+        <img src="{{ produit.image }}" class="card-img-top" alt="...">
+        <div class="card-body">
+            <h5 class="card-title">{{ produit.nom }}</h5>
+            <p class="card-text">{{ produit.description | raw }}</p>
+            <p class="card-text">{{ produit.prix }}$</p>
+            <p class="card-text">
+                <small class="text-body-secondary">
+                Ecrit le {{ produit.dateCreation | date('d/m/Y') }} a
+                {{ produit.dateCreation | date('H:i') }}
+                </small>
+            </p>
+            <a href="{{ path('product_show', {'id' : produit.id}) }}" class="btn btn-primary">Voir detail</a>
+        </div>
+  </div>
+  <br />
+</div>
+
+    {% endfor %}
+</div>
+<br />
+{% endblock %}

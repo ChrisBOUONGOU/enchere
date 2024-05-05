@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello CardController!{% endblock %}
+
+{% block body %}
+
+
+<main class="page-wrapper">
+    {% if card|length > 0 %}
+    <form action="{{ path('order_index') }}">
+       <div>
+            <div>
+                <div>
+                    <h2>Mon panier</h2>
+                    <h3>Ajouter d'autre article</h3>
+                    {% for item in card %}
+                        <p>{{ item.product.nom }}<p>
+                            {{item.quantity}}
+                         <a href="{{ path('card_remove', {id: item.product.id}) }}">supprimer</a>
+                    {% endfor %}
+                </div>
+               <button type="submit" class="btn btn-primary">valid</button>
+            <div>
+       
+       
+       </div>
+    </form>
+    {% else %}
+
+    {% endif %}
+    
+</main>
+{% endblock %}

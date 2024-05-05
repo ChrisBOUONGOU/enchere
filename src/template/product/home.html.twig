@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Page d'accueil {% endblock %}
+
+{% block body %}
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">Card title</h5>
+    <h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6>
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    <a href="#" class="card-link">Card link</a>
+    <a href="#" class="card-link">Another link</a>
+
+  </div>
+</div>
+<br />
+<div class="card">
+  <div class="card-header">
+    Derniere enchere
+  </div>
+  <div class="card-body">
+
+<div class="row">
+  {% for produit in produits | slice(0, 3)  %}
+  <div class="col-md-4">
+<div class="card">
+        <img src="{{ produit.image }}" class="card-img-top" alt="...">
+        <div class="card-body">
+            <h5 class="card-title">{{ produit.nom }}</h5>
+            <p class="card-text">{{ produit.description | raw }}</p>
+            <p class="card-text">{{ (produit.prix / 100) | number_format(2,',','.') }}$</p>
+            <p class="card-text">
+                <small class="text-body-secondary">
+                Ecrit le {{ produit.dateCreation | date('d/m/Y') }} a
+                {{ produit.dateCreation | date('H:i') }}
+                </small>
+            </p>
+            <a href="{{ path('product_show', {'id' : produit.id}) }}" class="btn btn-primary">Voir detail</a>
+        </div>
+
+
+   </div>
+   <br />
+</div>
+
+ {% endfor %}
+</div>
+</div>
+</div>
+<br />
+{% endblock %}

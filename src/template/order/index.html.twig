@@ -1,0 +1,27 @@
+{% block title %}Payment{% endblock %}
+
+{% block body %}
+{{ form_start(form, {action:path('order_prepare')}) }}
+<h1>Creation de la commande</h1>
+<p>
+Si vous n'avez pas d'addresse ajouter en une dans votre espace compte
+<a href="#">ajouter une addresse</a>
+</p>
+<h3>Choisir votre livraison</h3>
+{{ form_row(form.addresses)|replace({'[-br]' : '</br>'})| raw }}
+<h3>Mode de livraison</h3>
+<div>
+{{ form_row(form.transporter)|replace({'[-br]' : '</br>'})| raw }}
+</div>
+<h2>recap {{ recapCard | length }}</h2>
+{% set total = null %}
+{% for product in recapCard %}
+{% set total = total + (product.product.prix * product.quantity) %}
+<p>{{ product.product.nom }}</p>
+<p>{{ (product.product.prix / 100) | number_format(2,',','.') }}</p>
+
+{% endfor %}
+<p>{{ (total / 100) | number_format(2,',','.') }}</p>
+   <button type="submit" class="btn btn-primary">valid</button>
+{{ form_end(form) }}
+{% endblock %}
