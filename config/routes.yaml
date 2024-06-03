@@ -3,3 +3,8 @@ controllers:
         path: ../src/Controller/
         namespace: App\Controller
     type: attribute
+
+update_product_price_route:
+    path: '/update-price/{id}'
+    controller: 'App\Controller\ProductController::updateProductPrice'
+    methods: ['GET', 'POST']

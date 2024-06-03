@@ -1,0 +1,21 @@
+{% extends 'pay.html.twig' %}
+
+{% block title %}Demande de retour{% endblock %}
+
+{% block body %}
+ <div class="container mt-5">
+        <h1>Demande de Retour</h1>
+        <p>Êtes-vous sûr de vouloir retourner à la page précédente?</p>
+         <a href="{{ path('card_index') }}" class="btn btn-primary">Confirmer</a>
+
+
+               <form method="post" action="{{ path('payment_stripe', {reference: reference})}}">
+                  <button type="submit" class="btn btn-lg btn-dark">Non</button>
+               </form>
+
+      
+    </div>
+
+
+   
+{% endblock %}

@@ -1,33 +1,73 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello CardController!{% endblock %}
+{% block title %}Panier{% endblock %}
 
 {% block body %}
 
 
 <main class="page-wrapper">
+<div class="card">
     {% if card|length > 0 %}
-    <form action="{{ path('order_index') }}">
-       <div>
-            <div>
-                <div>
-                    <h2>Mon panier</h2>
-                    <h3>Ajouter d'autre article</h3>
+    <div class="container position-relative zindex-2 pt-5 pb-lg-5 pb-md-4 pb-2">
+        <div class="row">
+            <div class="col-lg-12 offset-lg-1 pt-1">
+                <h2>Mon panier</h2>
+                <p>Ajouter d'autres articles disponible sur le site : <a href="{{ path('app_product') }}">Voir les produits</a></p>
+                    <form action="{{ path('order_index') }}">                   
                     {% for item in card %}
-                        <p>{{ item.product.nom }}<p>
-                            {{item.quantity}}
-                         <a href="{{ path('card_remove', {id: item.product.id}) }}">supprimer</a>
+                    <div class="d-sm-flex align-items-center py-4">
+                        <img src="{{ item.product.image }}" width="150" height="150">
+                        <div class="w-100 pt-1 ps-sm-4">
+                            <div class="d-flex">
+                                <div class="me-3">
+                                    <h2 class="h5 mb-2">Nom du produit : {{ item.product.nom }}<h2>
+                    
+                                     {{ (item.price.amount / 100)  | number_format(2,',','.') }}
+                                </div>     
+                                <div class="nav justify-content-end mt-n5 mt-sn-n3">
+                                <a class="nav-link fs-xl p-2" href="{{ path('card_remove', {id: item.product.id}) }}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="dark" class="bi bi-trash" viewBox="0 0 16 16">
+                                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                                    </svg>
+                                </a>
+                            </div>                         
+                            </div>
+                            
+                        </div>
+                    </div>
                     {% endfor %}
-                </div>
-               <button type="submit" class="btn btn-primary">valid</button>
-            <div>
+              
+               <button type="submit" class="btn btn-dark">Valider le panier</button>
+        
        
        
-       </div>
-    </form>
-    {% else %}
+    
+                </form>
+            </div>
+        </div>
+    </div>
+    
+</div>
+    
 
+    {% else %}
+    <div class="card">
+        <div class="container d-flex flex-column justify-content-center min-vh-100 py-5">
+            <div class="text-center pt-4 mt-lg-2">
+                <h1 class="display-5">Votre panier est vide</h1>
+                <p class="fs-lg pb-2 pb-md-0 mb-4 mb-md-5">Commencez a faire votre enchere maintenant pour l'un de nos articles</p>
+                <a class="btn btn-lg btn-primary" href="{{ path('app_product') }}">Voir les produits</a>
+            </div>
+        </div>
+    </div>
+    
     {% endif %}
     
 </main>
+<br />
+<br />
+<br />
+<br />
+<br />
 {% endblock %}

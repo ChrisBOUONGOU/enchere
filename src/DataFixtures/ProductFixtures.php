@@ -13,7 +13,7 @@ class ProductFixtures extends Fixture
         for($i = 1; $i <= 10 ;$i++){
             $product = new Products();
             $product->setNom("Titre du produit numero $i")
-                    ->setPrix(12.65)
+                    ->setStartingPrice(12.65)
                     ->setDescription("sdfsdfsd")
                     ->setImage("http://placehold.it/350x150")
                     ->setDateCreation(new \DateTime());

@@ -1,9 +1,50 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} Contact {% endblock %}
+{% block title %}Contact{% endblock %}
 
 {% block body %}
+ <div class="container mt-5">
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        <div class="card">
+         <div class="card-header">
+            <h5 class="card-title">Contact</h5>
+          </div>
+          <div class="card-body">
+    
 
-dzfdsffsdfsdf
+    {% if app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ app.flashes('success')[0] }}
+        </div>
+    {% endif %}
 
+    {{ form_start(form) }}
+    <div class="mb-3">
+        {{ form_row(form.nom) }}
+    </div>
+    <div class="mb-3">
+        {{ form_row(form.email) }}
+    </div>
+    <div class="mb-3">
+        {{ form_row(form.message) }}
+    </div>
+     <div class="d-grid gap-2">
+        <button type="submit" class="btn btn-dark">Envoyer</button>
+     </div>
+    {{ form_end(form) }}
+    </div>
+</div>
+</div>
+</div>
+</div>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
 {% endblock %}

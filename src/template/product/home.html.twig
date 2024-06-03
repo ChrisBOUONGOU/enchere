@@ -5,11 +5,8 @@
 {% block body %}
 <div class="card">
   <div class="card-body">
-    <h5 class="card-title">Card title</h5>
-    <h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6>
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-    <a href="#" class="card-link">Card link</a>
-    <a href="#" class="card-link">Another link</a>
+    <h5 class="card-title">Bienvenue sur le site de Marteau et Enchere</h5>
+    <p class="card-text">Pour monter votre enchere et ainsi avoir le gros lot, c'est dans la page "enchere" de votre compte et attention de toujours verifier !</p>
 
   </div>
 </div>
@@ -24,18 +21,18 @@
   {% for produit in produits | slice(0, 3)  %}
   <div class="col-md-4">
 <div class="card">
-        <img src="{{ produit.image }}" class="card-img-top" alt="...">
+        <img src="{{ produit.image }}" class="card-img-top" alt="img" height="300">
         <div class="card-body">
             <h5 class="card-title">{{ produit.nom }}</h5>
-            <p class="card-text">{{ produit.description | raw }}</p>
-            <p class="card-text">{{ (produit.prix / 100) | number_format(2,',','.') }}$</p>
+            <p class="card-text">{{ produit.description | raw | slice(0, 100)}}...</p>
+            <p class="card-text">Prix de depart : <strong>{{ (produit.startingPrice / 100) | number_format(2,',','.') }}$+Taxes</strong></p>
             <p class="card-text">
                 <small class="text-body-secondary">
-                Ecrit le {{ produit.dateCreation | date('d/m/Y') }} a
+                Fin de l'enchere : {{ produit.dateCreation | date('d/m/Y') }} a
                 {{ produit.dateCreation | date('H:i') }}
                 </small>
             </p>
-            <a href="{{ path('product_show', {'id' : produit.id}) }}" class="btn btn-primary">Voir detail</a>
+            <a href="{{ path('product_show', {'id' : produit.id}) }}" class="btn btn-dark">Voir detail</a>
         </div>
 
 

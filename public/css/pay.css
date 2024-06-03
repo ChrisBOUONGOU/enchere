@@ -1,0 +1,131 @@
+
+
+/* Styles pour les téléphones */
+@media (max-width: 767px) {
+
+    .navbar{
+        display: flex; /* Utilisation de flexbox pour aligner les éléments horizontalement */
+        justify-content: center; /* Centrer les éléments horizontalement */
+        background-color: #f0f0f0; /* Couleur de fond */
+        padding: 10px 0; /* Espacement interne */
+        flex-wrap: wrap; /* Permettre aux éléments de passer à la ligne */
+    }
+
+    .colm  {
+        color: black; /* Couleur rouge pour les téléphones */
+    }
+
+    .colmo{
+        color: black;
+    }
+
+    .colmi{
+        color: black;
+    }
+
+    .lok{
+        text-decoration: none; 
+        color: black;
+    }
+    
+    .navbar a, .navbar  span  {
+        text-decoration: none; /* Supprimer les soulignements des liens */
+    color: black; /* Couleur du texte */
+    padding: 0 15px; /* Espacement des liens */
+    display: inline-flex; /* Affichage en ligne avec flexbox */
+    align-items: center; /* Aligner les éléments verticalement au centre */
+    }
+    .navbar span {
+        color: black; /* Couleur du slash */
+        padding: 0; /* Ajustement du padding pour le slash */
+        margin: 0 5px; /* Espacement des slashes */
+    }
+
+}
+
+/* Styles pour les tablettes */
+@media (min-width: 768px) and (max-width: 992px) {
+    .navbar{
+        display: flex; /* Utilisation de flexbox pour aligner les éléments horizontalement */
+        justify-content: center; /* Centrer les éléments horizontalement */
+        background-color: #f0f0f0; /* Couleur de fond */
+        padding: 10px 0; /* Espacement interne */
+        flex-wrap: wrap; /* Permettre aux éléments de passer à la ligne */
+    }
+
+    
+    .colm {
+        color: black; /* Couleur bleue pour les tablettes */
+    }
+
+    .colmo{
+        color: black;
+    }
+
+    .colmi{
+        color: black;
+    }
+
+    .lok{
+        text-decoration: none; 
+        color: black;
+    }
+  
+
+    .navbar a, .navbar  span  {
+        text-decoration: none; /* Supprimer les soulignements des liens */
+    color: black; /* Couleur du texte */
+    padding: 0 15px; /* Espacement des liens */
+    display: inline-flex; /* Affichage en ligne avec flexbox */
+    align-items: center; /* Aligner les éléments verticalement au centre */
+    }
+    .navbar span {
+        color: black; /* Couleur du slash */
+        padding: 0; /* Ajustement du padding pour le slash */
+        margin: 0 5px; /* Espacement des slashes */
+    }
+
+}
+
+/* Styles pour les ordinateurs */
+@media (min-width: 992px) {
+    .colm {
+        color: white; /* Couleur verte pour les ordinateurs */
+    }
+
+    .uj{
+        color: white;
+    }
+
+
+    .colmo{
+        color: white;
+    }
+
+    .colmi{
+        color: white;
+    }
+
+    .lok{
+        text-decoration: none; 
+        color: white;
+    }
+
+    .navbar  a, .navbar  span {
+        text-decoration: none; /* Supprimer les soulignements des liens */
+        padding: 0 15px; /* Espacement des liens */
+        display: inline-flex; /* Affichage en ligne avec flexbox */
+        align-items: center; /* Aligner les éléments verticalement au centre */
+    }
+
+
+    .navbar span {
+        color: white; /* Couleur du slash */
+        padding: 0; /* Ajustement du padding pour le slash */
+    }
+
+    .lk{
+        text-decoration: none; 
+        color: black;
+    }
+}

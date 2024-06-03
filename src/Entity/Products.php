@@ -3,6 +3,9 @@
 namespace App\Entity;
 
 use App\Repository\ProductsRepository;
+use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -18,7 +21,7 @@ class Products
     private ?string $nom = null;
 
     #[ORM\Column]
-    private ?float $prix = null;
+    private ?float $starting_price = null;
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
@@ -28,6 +31,21 @@ class Products
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $date_creation = null;
+
+    /**
+     * @var Collection<int, Purchase>
+     */
+    #[ORM\OneToMany(targetEntity: Purchase::class, mappedBy: 'products', orphanRemoval: true)]
+    private Collection $purchases;
+
+ 
+  
+
+    public function __construct()
+    {
+        $this->purchases = new ArrayCollection();
+
+    }
 
     public function getId(): ?int
     {
@@ -46,14 +64,14 @@ class Products
         return $this;
     }
 
-    public function getPrix(): ?float
+    public function getStartingPrice(): ?float
     {
-        return $this->prix;
+        return $this->starting_price;
     }
 
-    public function setPrix(float $prix): static
+    public function setStartingPrice(float $starting_price): static
     {
-        $this->prix = $prix;
+        $this->starting_price = $starting_price;
 
         return $this;
     }
@@ -93,4 +111,41 @@ class Products
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Purchase>
+     */
+    public function getPurchases(): Collection
+    {
+        return $this->purchases;
+    }
+
+    public function addPurchase(Purchase $purchase): static
+    {
+        if (!$this->purchases->contains($purchase)) {
+            $this->purchases->add($purchase);
+            $purchase->setProducts($this);
+        }
+
+        return $this;
+    }
+
+    public function removePurchase(Purchase $purchase): static
+    {
+        if ($this->purchases->removeElement($purchase)) {
+            // set the owning side to null (unless already changed)
+            if ($purchase->getProducts() === $this) {
+                $purchase->setProducts(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CartItem>
+     */
+    
+
+
 }

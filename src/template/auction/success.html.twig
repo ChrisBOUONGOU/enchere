@@ -1,0 +1,9 @@
+{% extends 'pay.html.twig' %}
+
+{% block title %}Paiement reussit{% endblock %}
+
+{% block body %}
+<h1>Enchère Réussie</h1>
+<p>Félicitations ! Votre paiement a été effectué avec succès. Vous avez remporté l'enchère.</p>
+ <a href="{{ path('home') }}" class="btn btn-dark">Retour à la liste des produits en cliquant ici, vous pouvez aller verifier votre enchere</a>
+{% endblock %}

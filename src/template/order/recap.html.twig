@@ -1,37 +1,100 @@
+{% extends 'pay.html.twig' %}
+
 {% block title %}Verifier la commande{% endblock %}
 
 {% block body %}
 
 
-<div class="d-none d-lg-block bg-secondary position-fixed top-0 start-0 h-100" style="width: 52.5%;"></div>
+<div class="d-none d-lg-block bg-dark position-fixed top-0 start-0 h-100" style="width: 52.5%;"></div>
 <div class="container position-relative zindex-2 pt-5 pb-lg-5 pb-md-4 pb-2">
-   
-</div>
+   <div class="row">
+      <div class="col-lg-6">
+         <nav class="navbar navbar-expand-lg">
+            <ul class="mt-5 pt-lg-3 pb-md-1 pb-lg-3 navbar-nav">
+               <li class="nav-item"><a class="nav-link lok" href="{{ path('home')}}">Accueil</a></li>
+               <span>/</span>
+               <li class="nav-item"><a class="nav-link lok" href="{{ path('app_product') }}">Produit</a></li>
+               <span>/</span>
+               <li class="nav-item active" aria-current="page"><a class="nav-link lok">Verifier la commande</a></li>
+            </ul>
+         </nav>
 
-<div>
-{{ transporter.title }}
-{{ transporter.content }}
-{{ (transporter.price / 100) | number_format(2,',','.') }}
-{{ delivery | raw }}
-{{ recapCard | length }}
-</div>
-{% set total = null %}
-{% for product in recapCard %}
-{{ product.product.nom }}
-<p>{{ (product.product.prix / 100) | number_format(2,',','.') }}</p>
-<a href="{{ path('card_remove', {id: product.product.id}) }}">remove</a>
-{% set total = total + (product.product.prix * product.quantity) %}
-{% endfor %}
-<p>{{ (total / 100) | number_format(2,',','.') }}</p>
-{{ (transporter.price / 100) | number_format(2,',','.') }}
-{{ (total / 100 + (transporter.price / 100)) | number_format(2,',','.')}}
-<div>
-{% if method == 'stripe' %}
+         <h1 class="h2 pb-2 colm">Verifier la commande</h1>
+         <h2 class="fs-base fw-normal text-uppercase pb-1 pb-sm-1 colmo">1.<span class="text-decoration-underline ms-1">Les details d'expedition</span></h2>
+        
+         <div class="form-check mb-4">
+            <input class="form-check-input" type="radio" checked>
+            <label>
+               <span class="d-block fs-base fw-medium mb-1 colmi">{{ transporter.title }}</span>
+               <span class="colmi">{{ transporter.content }}</span>
+               <span class="fs-base fw-semibold colmi">{{ (transporter.price / 100) | number_format(2,',','.') }}</span>
+            </label>
+         </div>
 
-<form method="post" action="{{ path('payment_stripe', {reference: reference})}}">
-   <button type="submit" class="btn btn-primary">pay by strpe | {{ (total / 100 + (transporter.price / 100)) | number_format(2,',','.')}}</button>
-</form>
-{% endif %}
+          <h2 class="fs-base fw-normal text-uppercase pb-2 pb-sm-3 colmo">2.<span class="text-decoration-underline ms-1">Adresse pour la livraison</span></h2>
+         
+         <div class="form-check mb-4">
+            <input class="form-check-input" type="radio" checked>
+            <label>
+               <span class="d-block fs-basefw-medium mb-1 colmi">{{ delivery | raw }}</span>
+            </label>
+         </div>
+      </div>
+
+      <div class="col-lg-5 offset-lg-1 pt-1">
+         <h2 class="pb-2 pt-md-2 my-4 mt-lg-5">Recapitulatif de la commande</h2>
+         {% set total = null %}
+         {% for product in recapCard %}
+         <div class="d-sm-flex align-items-center border-top py-4">
+            <a class="d-inline-block flex-shrink-0 bg-secondary rounded-1 p-sm-2 p-xl-3 mb-2 mb-sm-0" href="#">
+               <img src="{{ product.product.image }}" width="110" alt="produit">
+            </a>
+            <div class="w-100 pt-1 ps-sm-4">
+               <div class="d-flex">
+                  <div class="me-3">
+                     <h2 class="h5 mb-2">
+                     <a href="{{ path('product_show', {'id' : product.product.id}) }}" class="lk">
+                     {{ product.product.nom }}
+                     </a>
+                     <br />
+                     <p>x {{ product.quantity  }}<p>
+                     </h2>
+                  </div>
+                  <div class="text-end ms-auto">
+                     <div class="fs-5 mb-2">
+                        {{ ( product.price.amount  * product.quantity / 100) | number_format(2,',','.') }} $
+                     </div>
+                  </div>
+               </div>
+               <div class="nav justify-content-end mt-2">
+                  <a class="nav-link fs-xl p-2" href="{{ path('card_remove', {id: product.product.id}) }}" data-bs-toggle="tooltip" title="remove">
+                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="dark" class="bi bi-trash" viewBox="0 0 16 16">
+                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                        <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                     </svg>
+                  </a>
+               </div>
+            </div>
+         </div>
+            {% set total = total + ( product.price.amount * product.quantity) %}
+         {% endfor %}
+         <ul class="list-unstyled py-3 mb-0">
+            <li class="d-flex justify-content-between mb-2">Sous-total: <span class="fw-semibold ms-2">{{ (total / 100) | number_format(2,',','.') }}$</span></li>
+            <li class="d-flex justify-content-between mb-2">Frais de transport : <span class="fw-semibold ms-2">{{ (transporter.price / 100) | number_format(2,',','.') }}$</span></li>
+         </ul>
+         <div class="d-flex align-items-center justify-content-between border-top fs-xl pt-4">Total:
+            <span class="fs-3 fw-semibold text-dark ms-2">{{ ((total / 100) + (transporter.price / 100)) | number_format(2,',','.')  }} $</span>
+         </div>
+         <div class="mt-4 text-center">
+            {% if method == 'stripe' %}
+
+               <form method="post" action="{{ path('payment_stripe', {reference: reference})}}">
+                  <button type="submit" class="btn btn-lg btn-dark" style="border-raduis: 6px; position:relative; top: 20px;">Payer | {{ ((total / 100) + (transporter.price / 100)) | number_format(2,',','.') }} $ </button>
+               </form>
+            {% endif %}
+         </div>
+      </div>
+   </div>
 </div>
 
 {% endblock %}

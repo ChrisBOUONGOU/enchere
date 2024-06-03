@@ -14,7 +14,7 @@ class RecapDetails
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'recapDetails')]
-    #[ORM\JoinColumn(nullable: false)]
+ 
     private ?Order $orderProduct = null;
 
     #[ORM\Column]
@@ -28,6 +28,11 @@ class RecapDetails
 
     #[ORM\Column(length: 255)]
     private ?string $totalRecap = null;
+
+    #[ORM\Column]
+    private ?float $amount = null;
+
+ 
 
     public function getId(): ?int
     {
@@ -93,4 +98,18 @@ class RecapDetails
 
         return $this;
     }
+
+    public function getAmount(): ?float
+    {
+        return $this->amount;
+    }
+
+    public function setAmount(float $amount): static
+    {
+        $this->amount = $amount;
+
+        return $this;
+    }
+
+
 }

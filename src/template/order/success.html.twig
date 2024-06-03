@@ -1,0 +1,28 @@
+{% extends 'pay.html.twig' %}
+
+{% block title %}Paiement reussit{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        <div class="card">
+
+
+    <div class="alert alert-success" role="alert">
+        <i class="fas fa-check-circle"></i> Votre paiement a été effectué avec succès!
+    </div>
+    <p style="text-align: center;">Merci d'avoir effectué votre achat.</p>
+    <a href="{{ path('app_product') }}" class="btn btn-dark">Retour à la liste des produits en cliquant ici, vous pouvez aller verifier votre enchere</a>
+
+
+</div>
+<br />
+</div>
+<br />
+</div>
+</div>
+<br />
+
+
+{% endblock %}

@@ -2,6 +2,7 @@
 namespace App\Service;
 
 use App\Entity\Products;
+use App\Entity\Purchase;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -43,15 +44,17 @@ class CardService
         $cardData = [];
         if($card){
             foreach($card as $id => $quantity){
-                $product = $this->em->getRepository(Products::class)->findOneBy(['id' => $id]);
+                $product = $this->em->getRepository(Purchase::class)->findOneBy(['id' => $id]);
             
                 if(!$product){
                     $this->remove($id);
                     continue;
                 }
                 $cardData[] = [
-                    'product' => $product,
-                    'quantity' => $quantity
+                    'product' => $product->getProducts(),
+                    'price' => $product,
+                    'quantity' => $quantity,
+                    
                 ];
             
             

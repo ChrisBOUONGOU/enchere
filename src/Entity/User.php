@@ -37,6 +37,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $status = null;
 
+    #[ORM\Column(length: 64, nullable: true)]
+    private ?string $confirmationToken = null;
+
     #[ORM\Column(length: 255)]
     #[Assert\Length(min: 8, minMessage:"Votre mot de passe doit faire minimum 8 caractere")]
     #[Assert\EqualTo(propertyPath: "confirm_password", message: "Les mots de passes doivent etre identique")]
@@ -57,10 +60,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Address::class, mappedBy: 'user')]
     private Collection $addresses;
 
+    /**
+     * @var Collection<int, Purchase>
+     */
+    #[ORM\OneToMany(targetEntity: Purchase::class, mappedBy: 'users', orphanRemoval: true)]
+    private Collection $purchases;
+
+  
     public function __construct()
     {
         $this->orders = new ArrayCollection();
         $this->addresses = new ArrayCollection();
+        $this->purchases = new ArrayCollection();
     }
 
    
@@ -142,6 +153,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getConfirmationToken(): ?string
+    {
+        return $this->confirmationToken;
+    }
+
+    public function setConfirmationToken(?string $confirmationToken): self
+    {
+        $this->confirmationToken = $confirmationToken;
+
+        return $this;
+    }
+
        /**
      * The public representation of the user (e.g. a username, an email address, etc.)
      *
@@ -151,6 +174,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return (string) $this->email;
     }
+
+       /**
+     * The public representation of the user (e.g. a username, an email address, etc.)
+     *
+     * @see UserInterface
+     */
+    public function getUserId(): ?int
+    {
+        return (int) $this->id;
+    }
+
 
     /**
      * @see UserInterface
@@ -232,4 +266,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    /**
+     * @return Collection<int, Purchase>
+     */
+    public function getPurchases(): Collection
+    {
+        return $this->purchases;
+    }
+
+    public function addPurchase(Purchase $purchase): static
+    {
+        if (!$this->purchases->contains($purchase)) {
+            $this->purchases->add($purchase);
+            $purchase->setUsers($this);
+        }
+
+        return $this;
+    }
+
+    public function removePurchase(Purchase $purchase): static
+    {
+        if ($this->purchases->removeElement($purchase)) {
+            // set the owning side to null (unless already changed)
+            if ($purchase->getUsers() === $this) {
+                $purchase->setUsers(null);
+            }
+        }
+
+        return $this;
+    }
+
+   
 }

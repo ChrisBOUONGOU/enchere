@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Address;
 use App\Entity\Order;
+use App\Entity\Purchase;
 use App\Entity\RecapDetails;
+use App\Form\AddressType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,6 +14,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use App\Form\OrderType;
 use App\Service\CardService;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\SecurityBundle\Security;
 
 class OrderController extends AbstractController
 {
@@ -37,6 +41,31 @@ class OrderController extends AbstractController
         ]);
     }
 
+    #[Route('/order/ajouter-adresse', name: 'order_address')]
+    public function addAddress(Request $request, EntityManagerInterface $entityManager, Security $security)
+{
+    $user = $security->getUser(); 
+    $address = new Address();
+    $address->setUser($user);
+    $form = $this->createForm(AddressType::class, $address, [
+        'user' => $user, // Passer l'utilisateur au formulaire
+    ]);
+
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+
+        $entityManager->persist($address);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('order_index');
+    }
+
+    return $this->render('address/add.html.twig', [
+        'form' => $form->createView(),
+    ]);
+}
+
     #[Route('/order/verify', name: 'order_prepare', methods: ['POST'])]
     public function prepareOrder(CardService $cardService, Request $request): Response
     {
@@ -62,6 +91,9 @@ class OrderController extends AbstractController
             $deliveryForOrder .= '</br>'.$delivery->getAddress();
             $deliveryForOrder .= '</br>'.$delivery->getPostalCode().' - '.$delivery->getCity();
             $deliveryForOrder .= '</br>'.$delivery->getCountry();
+
+       
+
             $order = new Order();
             $reference = $datetime->format('dmY').'-'.uniqid();
             $order->setUser($this->getUser());
@@ -74,21 +106,23 @@ class OrderController extends AbstractController
             $order->setMethod('stripe');
 
             $this->em->persist($order);
-            
+            $purchase = new Purchase();
             foreach($cardService->getTotal() as $product){
                 $recapDetails = new RecapDetails();
                 $recapDetails->setOrderProduct($order);
                 $recapDetails->setQuantity($product['quantity']);
-                $recapDetails->setPrice($product['product']->getPrix());
+                $recapDetails->setPrice($product['product']->getStartingPrice());
                 $recapDetails->setProduct($product['product']->getNom());
                 $recapDetails->setTotalRecap(
-                    $product['product']->getPrix() * $product['quantity']
+                    $product['product']->getStartingPrice() * $product['quantity']
                 );
+                $recapDetails->setAmount($product['price']->getAmount());
             
                 $this->em->persist($recapDetails);
             }
+           
             $this->em->flush();
-
+         
         }
 
         return $this->render('order/recap.html.twig',[

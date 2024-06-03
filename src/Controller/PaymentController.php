@@ -10,6 +10,7 @@ use Stripe\Stripe;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Order;
 use App\Entity\Products;
+use App\Entity\Purchase;
 use App\Service\CardService;
 use Stripe\Checkout\Session;
 use Symfony\Component\HttpFoundation\Response;
@@ -37,18 +38,20 @@ class PaymentController extends AbstractController
         if(!$order){
             return $this->redirectToRoute('card_index');
         }
-
+        
         foreach($order->getRecapDetails()->getValues() as $product){
-            $productData = $this->em->getRepository(Products::class)->findOneBy(['nom' => $product->getProduct()]);
+            $purchase = new Purchase();
+            $productData = $this->em->getRepository(Purchase::class)->findOneBy(['products' => $product->getProduct()]);
             $productStripe[] = [
                 'price_data' => [
                     'currency' => 'cad',
-                    'unit_amount' => $product->getPrice(),
+                    'unit_amount' => $product->getAmount(),
                     'product_data' => [
                         'name' => $product->getProduct()
                     ]
                 ],
                 'quantity' => $product->getQuantity(),
+                
             ];
         }
 
@@ -65,15 +68,20 @@ class PaymentController extends AbstractController
 
        
         Stripe::setApiKey('sk_test_51PBaHuHKOWjzLA6viSTF0zET3maGowGec6HptfVtdavGGAJAdnEEFeVnOAPlsiXKqpvOnuyHHvxsgCsC84TvQUVh00OcmmBmfQ');
-    
         
+        
+        $user = new User();
         $checkout_session = Session::create([
             'customer_email' => $this->getUser()->getUserIdentifier(),
+      
             'payment_method_types' => ['card'],
             'line_items' => [[
                 $productStripe
             ]],
             'mode' => 'payment',
+            
+ 
+            'shipping_address_collection' => ['allowed_countries' => ['CA']],
             'success_url' => $this->generator->generate('payment_success',[
                 'reference' => $order->getReference()
             ], UrlGeneratorInterface::ABSOLUTE_URL),
@@ -83,6 +91,7 @@ class PaymentController extends AbstractController
             'automatic_tax' => [
                 'enabled' => true,
             ],
+
         ]);
 
         $order->setStripeSessionId($checkout_session->id);
@@ -99,10 +108,11 @@ class PaymentController extends AbstractController
     }
 
     #[Route('/order/error/{reference}', name: 'payment_error')]
-    public function stripeError($reference, CardService $cardService): Response
+    public function stripeError($reference, CardService $cardService)
     {
-        return $this->render('order/error.html.twig');
+        return $this->render('order/error.html.twig', ['reference' => $reference]);
     }
 
-    
 }
+
+//cle pour vrai paiement : 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

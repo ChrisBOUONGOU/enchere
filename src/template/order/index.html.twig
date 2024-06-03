@@ -1,27 +1,82 @@
-{% block title %}Payment{% endblock %}
+{% extends 'pay.html.twig' %}
+
+{% block title %}Creation de la commande{% endblock %}
 
 {% block body %}
-{{ form_start(form, {action:path('order_prepare')}) }}
-<h1>Creation de la commande</h1>
-<p>
-Si vous n'avez pas d'addresse ajouter en une dans votre espace compte
-<a href="#">ajouter une addresse</a>
-</p>
-<h3>Choisir votre livraison</h3>
-{{ form_row(form.addresses)|replace({'[-br]' : '</br>'})| raw }}
-<h3>Mode de livraison</h3>
-<div>
-{{ form_row(form.transporter)|replace({'[-br]' : '</br>'})| raw }}
-</div>
-<h2>recap {{ recapCard | length }}</h2>
-{% set total = null %}
-{% for product in recapCard %}
-{% set total = total + (product.product.prix * product.quantity) %}
-<p>{{ product.product.nom }}</p>
-<p>{{ (product.product.prix / 100) | number_format(2,',','.') }}</p>
+<div class="d-none d-lg-block bg-dark position-fixed top-0 start-0 h-100" style="width: 52.5%;"></div>
+<div class="container position-relative zindex-2 pt-5 pb-lg-5 pb-md-4 pb-2">
+   <div class="row">
+      <div class="col-lg-6">
+         <nav class="navbar navbar-expand-lg">
+            <ul class="mt-5 pt-lg-3 pb-md-1 pb-lg-3 navbar-nav">
+               <li class="nav-item"><a class="nav-link lok" href="{{ path('home')}}">Accueil</a></li>
+               <span>/</span>
+               <li class="nav-item"><a class="nav-link lok" href="{{ path('app_product') }}">Produit</a></li>
+               <span>/</span>
+               <li class="nav-item active" aria-current="page"><a class="nav-link lok">Verifier la commande</a></li>
+            </ul>
+         </nav>
+         {{ form_start(form, {action:path('order_prepare')}) }}
+         
+         <h1 class="h2 pb-2">Creation de la commande</h1>
+         <h2 class="fs-base fw-normal text-uppercase pb-1 pb-sm-1 colmo">1.<span class="text-decoration-underline ms-1">Les details d'expedition</span></h2>
+         <p>
+            Si vous n'avez pas d'addresse ajouter en une dans votre espace compte
+         <a href="{{ path('order_address') }}" class="btn btn-dark">Ajouter une addresse</a>
+         </p>
+         <h2 class="fs-base fw-normal text-uppercase pb-1 pb-sm-1 colmo">2.<span class="text-decoration-underline ms-1">Choisir une livraison</span></h2>
+         <div class="form-check mb-4 uj">
+         {{ form_row(form.addresses)|replace({'[-br]' : '</br>'})| raw }}
+         </div>
+          <h2 class="fs-base fw-normal text-uppercase pb-1 pb-sm-1 colmo">3.<span class="text-decoration-underline ms-1">Mode de livraison</span></h2>
+            <div class="form-check mb-4 uj">
+         {{ form_row(form.transporter)|replace({'[-br]' : '</br>'})| raw }}
+         </div>
+      </div>
 
-{% endfor %}
-<p>{{ (total / 100) | number_format(2,',','.') }}</p>
-   <button type="submit" class="btn btn-primary">valid</button>
+      <div class="col-lg-5 offset-lg-1 pt-1">
+         <h2 class="pb-2 pt-md-2 my-4 mt-lg-5">Recapitulatif de la commande</h2>
+         {% set total = null %}
+         {% for product in recapCard %}
+         {% set total = total + (product.price.amount * product.quantity) %}
+         <div class="d-sm-flex align-items-center border-top py-4">
+            <a class="d-inline-block flex-shrink-0 bg-secondary rounded-1 p-sm-2 p-xl-3 mb-2 mb-sm-0" href="#">
+               <img src="{{ product.product.image }}" width="110" alt="produit">
+            </a>
+            <div class="w-100 pt-1 ps-sm-4">
+               <div class="d-block">
+                  <div class="me-3" style="position: relative; top:15px;">
+                     <h2 class="h5 mb-2">
+                     <a href="{{ path('product_show', {'id' : product.product.id}) }}" class="lk">
+                     {{ product.product.nom }}
+                     </a>
+                     </h2>
+                     <p>{{ product.product.description | slice(0, 100) }}...</p>
+                  </div>
+                  <div>
+                      <p>Quantite: x{{ product.quantity  }} - Prix du produit : {{ ( product.price.amount / 100) | number_format(2,',','.')  }}$<p>
+                  </div>
+               </div> 
+                  <div class="nav justify-content-end mt-2">
+                  <a class="nav-link fs-xl p-2" href="{{ path('card_remove', {id: product.product.id}) }}" data-bs-toggle="tooltip" title="remove">
+                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="dark" class="bi bi-trash" viewBox="0 0 16 16">
+                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                        <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                     </svg>
+                  </a>
+               </div>
+            </div>
+         </div>
+         {% endfor %}
+          <div class="d-flex align-items-center justify-content-between border-top fs-xl pt-4 mb-4">Total:
+            <span class="fs-3 fw-semibold text-dark ms-2">{{ (total / 100) | number_format(2,',','.') }} $</span>
+         </div>
+         <div class="mt-5 text-center">
+            <button type="submit" class="btn btn-dark">Valider votre commande</button>
+         </div>
+      </div>
+   </div>
+
 {{ form_end(form) }}
+</div>
 {% endblock %}

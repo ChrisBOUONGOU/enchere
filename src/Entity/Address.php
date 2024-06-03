@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\AddressRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: AddressRepository::class)]
 class Address
@@ -47,7 +48,7 @@ class Address
 
     public function __toString(): string
     {
-        return $this->titre . '[-br]' .
+        return $this->nom .' '.$this->prenom. '[-br]' .
                $this->address. '[-br]' .
                $this->city.' - '.
                $this->country;

@@ -13,3 +13,14 @@ footer{
     opacity: 0.9; /* Opacité à 50% */
     padding: 20px;  
 }
+
+h5{
+    text-align: center;
+}
+
+.hidden-field {
+    display: none;
+}
+.hidden-label {
+    display: none;
+}

@@ -1,0 +1,9 @@
+{% extends 'pay.html.twig' %}
+
+{% block title %}Enchère Annulée{% endblock %}
+
+{% block body %}
+<h1>Enchère Annulée</h1>
+<p>Votre paiement a été annulé. Vous n'avez pas remporté l'enchère.</p>
+  <a href="{{ path('app_product') }}" class="btn btn-dark">Retour à la liste des produits en cliquant ici, vous pouvez aller verifier votre enchere</a>
+{% endblock %}
