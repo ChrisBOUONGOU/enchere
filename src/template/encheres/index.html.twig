@@ -12,7 +12,7 @@
   {% for enchere in encheres %}
          <div class="col-md-4">
                 <div class="card">
-                        <img src="{{ enchere.image }}" class="card-img-top" alt="img" height="300">
+                        <img src="{{ asset('uploads/images/products/' ~ enchere.image)  }}" class="card-img-top" alt="img" height="300">
                      <div class="card-body">
                      <h5 class="card-title">{{ enchere.nom }}</h5>
                       <p class="card-text">Prix de depart : <strong>{{ (enchere.startingPrice / 100) | number_format(2,',','.')  }}$+Taxes</strong></p>
@@ -24,6 +24,7 @@
 </div>
 </div>
 </div>
+<br />
 <br />
 <br />
 {% endblock %}

@@ -5,35 +5,53 @@
 
 {% block body %}
 <div class="card">
-        <div class="container d-flex flex-column justify-content-center min-vh-100 py-5">
-            <div class="text-center pt-4 mt-lg-2">
-<h1>{{ auction.nom }}</h1>
-<p>Prix de départ : {{ (auction.startingPrice / 100) | number_format(2,',','.') }} $</p>
-<p>Fin de l'enchère : {{ auction.dateCreation|date('Y-m-d H:i:s') }}</p>
+    <div class="card-header">
+        {{ auction.nom }}
+    </div>
+    <div class="card-body">
+    <div class="row">
+    <div class="col">
+    <p><strong>Prix de départ : </strong>{{ (auction.startingPrice / 100) | number_format(2,',','.') }} $</p>
+    <p><strong>Fin de l'enchère : </strong>{{ auction.dateCreation|date('Y-m-d H:i:s') }}</p>
 
+
+
+{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+    <h2>Placer une enchère</h2>
+    <br />
+    <form action="{{ path('auction_bid', {'id': auction.id}) }}" method="post" id="bid-form">
+        <div>
+            <label for="amount">Montant de l'enchère :</label>
+            <input type="number" id="amount" name="amount" class="form-control" min="{{ convert }}" step="0.01" required>
+        </div>
+        <br />
+        <button type="submit" class="btn btn-dark">Placer l'enchère</button>
+    </form>
+{% else %}
+    <p><a href="{{ path('security_login') }}">Connectez-vous</a> pour placer une enchère.</p>
+{% endif %}
+</div>
+    <div class="col">
 <h2>Enchères actuelles</h2>
 <ul id="bids">
     {% for bid in auction.purchases %}
         <li>{{ bid.users.nom }} : {{ (bid.amount / 100) | number_format(2,',','.')  }} $ ({{ bid.purchaseDate|date('Y-m-d H:i:s') }})</li>
     {% endfor %}
 </ul>
-
-{% if is_granted('IS_AUTHENTICATED_FULLY') %}
-    <h2>Placer une enchère</h2>
-    <form action="{{ path('auction_bid', {'id': auction.id}) }}" method="post" id="bid-form">
-        <div>
-            <label for="amount">Montant de l'enchère :</label>
-            <input type="number" id="amount" name="amount" min="{{ convert }}" step="0.01" required>
-        </div>
-        <button type="submit">Placer l'enchère</button>
-    </form>
-{% else %}
-    <p><a href="{{ path('security_login') }}">Connectez-vous</a> pour placer une enchère.</p>
-{% endif %}
-   </div>
-      </div>
+</div>
+</div>
+    </div>
          </div>
          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
 <script>
     var conn = new WebSocket('ws://localhost:8000');
     var bidsElement = document.getElementById('bids');

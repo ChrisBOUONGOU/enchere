@@ -80,7 +80,7 @@ class OrderController extends AbstractController
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
             $datetime = new \DateTime('now');
-            $transporter = $form->get('transporter')->getData();
+         
             $delivery = $form->get('addresses')->getData();
             $deliveryForOrder = $delivery->getNom().' '.$delivery->getPrenom();
             $deliveryForOrder .= '</br>'.$delivery->getPhone();
@@ -100,8 +100,7 @@ class OrderController extends AbstractController
             $order->setReference($reference);
             $order->setDateCreation($datetime);
             $order->setDelivery($deliveryForOrder);
-            $order->setTransporterName($transporter->getTitle());
-            $order->setTransporterPrice($transporter->getPrice());
+       
             $order->setPaid(0);
             $order->setMethod('stripe');
 
@@ -128,7 +127,6 @@ class OrderController extends AbstractController
         return $this->render('order/recap.html.twig',[
             'method' => $order->getMethod(),
             'recapCard' => $cardService->getTotal(),
-            'transporter' => $transporter,
             'delivery' => $deliveryForOrder,
             'reference' => $order->getReference()
 

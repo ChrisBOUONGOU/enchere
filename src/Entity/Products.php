@@ -8,8 +8,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 #[ORM\Entity(repositoryClass: ProductsRepository::class)]
+#[Vich\Uploadable]
 class Products
 {
     #[ORM\Id]
@@ -26,7 +29,11 @@ class Products
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
-    #[ORM\Column(length: 255)]
+    
+    #[Vich\UploadableField(mapping: "products", fileNameProperty: "image")]
+    private ?File $imageFile = null;
+
+    #[ORM\Column(type: 'string')]
     private ?string $image = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
@@ -37,6 +44,9 @@ class Products
      */
     #[ORM\OneToMany(targetEntity: Purchase::class, mappedBy: 'products', orphanRemoval: true)]
     private Collection $purchases;
+
+    #[ORM\Column]
+    private ?bool $isPublished = null;
 
  
   
@@ -88,16 +98,25 @@ class Products
         return $this;
     }
 
+    public function setImageFile(?File $imageFile = null): void
+    {
+        $this->imageFile = $imageFile;
+    }
+
+    public function getImageFile(): ?File
+    {
+        return $this->imageFile;
+    }
+
     public function getImage(): ?string
     {
         return $this->image;
     }
 
-    public function setImage(string $image): static
+    public function setImage(?string $image): void
     {
         $this->image = $image;
 
-        return $this;
     }
 
     public function getDateCreation(): ?\DateTimeInterface
@@ -145,6 +164,18 @@ class Products
     /**
      * @return Collection<int, CartItem>
      */
+
+    public function isPublished(): ?bool
+    {
+        return $this->isPublished;
+    }
+
+    public function setPublished(bool $isPublished): static
+    {
+        $this->isPublished = $isPublished;
+
+        return $this;
+    }
     
 
 

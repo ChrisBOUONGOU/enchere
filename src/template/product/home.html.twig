@@ -13,33 +13,34 @@
 <br />
 <div class="card">
   <div class="card-header">
-    Derniere enchere
+    Dernière enchère
   </div>
   <div class="card-body">
 
 <div class="row">
   {% for produit in produits | slice(0, 3)  %}
+  {% if produit.isPublished %}
   <div class="col-md-4">
 <div class="card">
-        <img src="{{ produit.image }}" class="card-img-top" alt="img" height="300">
+        <img src="{{ asset('uploads/images/products/' ~ produit.image) }}" class="card-img-top" alt="img" height="300">
         <div class="card-body">
             <h5 class="card-title">{{ produit.nom }}</h5>
             <p class="card-text">{{ produit.description | raw | slice(0, 100)}}...</p>
-            <p class="card-text">Prix de depart : <strong>{{ (produit.startingPrice / 100) | number_format(2,',','.') }}$+Taxes</strong></p>
+            <p class="card-text">Prix de départ : <strong>{{ (produit.startingPrice / 100) | number_format(2,',','.') }}$+Taxes</strong></p>
             <p class="card-text">
                 <small class="text-body-secondary">
-                Fin de l'enchere : {{ produit.dateCreation | date('d/m/Y') }} a
+                Fin de l'enchère : {{ produit.dateCreation | date('d/m/Y') }} a
                 {{ produit.dateCreation | date('H:i') }}
                 </small>
             </p>
-            <a href="{{ path('product_show', {'id' : produit.id}) }}" class="btn btn-dark">Voir detail</a>
+            <a href="{{ path('product_show', {'id' : produit.id}) }}" class="btn btn-dark">Voir le détail du produit</a>
         </div>
 
 
    </div>
    <br />
 </div>
-
+{% endif %}
  {% endfor %}
 </div>
 </div>

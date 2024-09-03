@@ -55,16 +55,7 @@ class PaymentController extends AbstractController
             ];
         }
 
-        $productStripe[] = [
-            'price_data' => [
-                'currency' => 'cad',
-                'unit_amount' => $order->getTransporterPrice(),
-                'product_data' => [
-                    'name' => $order->getTransporterName()
-                ]
-            ],
-            'quantity' => 1,
-        ];
+        
 
        
         Stripe::setApiKey('sk_test_51PBaHuHKOWjzLA6viSTF0zET3maGowGec6HptfVtdavGGAJAdnEEFeVnOAPlsiXKqpvOnuyHHvxsgCsC84TvQUVh00OcmmBmfQ');

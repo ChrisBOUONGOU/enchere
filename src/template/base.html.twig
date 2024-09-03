@@ -28,8 +28,16 @@
                   <li class="nav-item"><a href="{{ path('security_login') }}" class="d-flex align-items-center px-2 text-white text-decoration-none">Connexion</a></li>
                   <li class="nav-item"><a href="{{ path('security_reg') }}" class="d-flex align-items-center px-2 text-white text-decoration-none">Inscription</a></li>
                 </ul>
+                {% elseif 'vendeur' in app.user.status %}
+                <ul class="nav"> 
+                        <li class="nav-item"><a href="{{ path('product_new') }}" class="d-flex align-items-center px-2 text-white text-decoration-none">Ajouter un produit</a></li>
+                        <li class="nav-item"><a href="{{ path('enchere_show') }}" class="d-flex align-items-center px-2 text-white text-decoration-none">Mes encheres</a></li>
+                        <li class="nav-item"><a href="{{ path('card_index') }}" class="d-flex align-items-center px-2 text-white text-decoration-none">Panier</a></li>                      
+                        <li class="nav-item"><a href="{{ path('security_logout') }}" class="d-flex align-items-center px-2 text-white text-decoration-none">Deconnexion</a></li>
+                </ul>
                 {% else %}
                 <ul class="nav"> 
+
                         <li class="nav-item"><a href="{{ path('enchere_show') }}" class="d-flex align-items-center px-2 text-white text-decoration-none">Mes encheres</a></li>
                         <li class="nav-item"><a href="{{ path('card_index') }}" class="d-flex align-items-center px-2 text-white text-decoration-none">Panier</a></li>                      
                         <li class="nav-item"><a href="{{ path('security_logout') }}" class="d-flex align-items-center px-2 text-white text-decoration-none">Deconnexion</a></li>
@@ -50,7 +58,7 @@
       <a href="/" class="d-flex align-items-center px-2 text-white text-decoration-none">
         <svg class="bi" width="30" height="24"><use xlink:href="#bootstrap"/></svg>
       </a>
-      <span class="d-flex align-items-center px-2 text-white text-decoration-none">&copy; 2024 Marteau et Enchere</span>
+      <span class="d-flex align-items-center px-2 text-white text-decoration-none">&copy; 2024 Marteau et Enchère</span>
     </div>
 
     <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">

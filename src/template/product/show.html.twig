@@ -16,27 +16,27 @@
                       
                         <div class="row">
                             <div class="col">
-                                <img src="{{ produit.image }}" class="card-img-top" alt="...">
+                                <img src="{{ asset('uploads/images/products/' ~ produit.image) }}" class="card-img-top" alt="...">
                                 <p class="card-text">{{ produit.description }}</p>
-                                <p class="card-text" id="currentPrice">Prix de depart : <strong>{{ (produit.startingPrice / 100) | number_format(2,',','.') }}$+Taxes</strong></p>
+                                <p class="card-text" id="currentPrice">Prix de départ : <strong>{{ (produit.startingPrice / 100) | number_format(2,',','.') }}$+Taxes</strong></p>
                           
                    
                                 <p class="card-text">
     
                                     <small class="text-body-secondary">
-                                       Fin de l'enchere : {{ produit.dateCreation | date('d/m/Y') }} a
+                                       Fin de l'enchère : {{ produit.dateCreation | date('d/m/Y') }} a
                                       {{ produit.dateCreation | date('H:i') }}
                                    </small>
                                 </p>
-                                <button type="submit" class="btn btn-dark" id="bidButton">Faire une enchere</button>
+                                <button type="submit" class="btn btn-dark" id="bidButton">Faire une enchère</button>
                             </div>
                             <div class="col">
-                                <h2>Liste des personnes ayant fait l'enchere</h2>
+                                <h2>Liste des personnes ayant fait l'enchère</h2>
                           
   {% set sortedPurchases = produit.purchases|sort((a, b) => b.purchaseDate <=> a.purchaseDate) %}                      
         {% if isAuctionEnded %}
         {% if hight %}
-            <p>Winning bid: {{ (hight.amount/ 100)  | number_format(2,',','.') }} by {{ hight.users.nom }}</p>
+            <p>Gagnant de l'enchère : {{ (hight.amount/ 100)  | number_format(2,',','.') }} by {{ hight.users.nom }}</p>
         {% else %}
             <p>vous avez perdu</p>
         {% endif %}
@@ -47,7 +47,7 @@
                                 <p><strong>Nom:</strong> {{ purchase.users.nom }} - <strong>Prénom:</strong> {{ purchase.users.prenom }}</p>
                                                          <p><strong>Date d'achat:</strong> {{ purchase.purchaseDate|date('d/m/Y') }}</p>
                           
-                        <p><strong>Prix de l'enchere recent:</strong> {{  (purchase.amount / 100)  | number_format(2,',','.')  }}$+Taxes</p>
+                        <p><strong>Prix de l'enchère récent:</strong> {{  (purchase.amount / 100)  | number_format(2,',','.')  }}$+Taxes</p>
   
                 
                         </div>
@@ -62,7 +62,7 @@
               
           {% if isWinner %}
 
-        <a href="{{ path('card_add', {'id' : hight.id}) }}">Bid</a>
+        <a href="{{ path('card_add', {'id' : hight.id}) }}">Mettre dans le panier</a>
    
     {% endif %}
                

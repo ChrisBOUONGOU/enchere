@@ -22,13 +22,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\Email()]
+    #[Assert\Email(message: "Veuillez entrer une adresse email valide.")]
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Ce champ ne peut pas être vide.")]
     private ?string $nom = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Ce champ ne peut pas être vide.")]
     private ?string $prenom = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
@@ -41,11 +43,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $confirmationToken = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\Length(min: 8, minMessage:"Votre mot de passe doit faire minimum 8 caractere")]
-    #[Assert\EqualTo(propertyPath: "confirm_password", message: "Les mots de passes doivent etre identique")]
+    #[Assert\Length(min: 8, minMessage:"Votre mot de passe doit faire minimum 8 caractere.")]
+    #[Assert\EqualTo(propertyPath: "confirm_password", message: "Les mots de passes doivent etre identique.")]
     private ?string $password = null;
 
-    #[Assert\EqualTo(propertyPath: "password", message: "Les mots de passes doivent etre identique")]
+    #[Assert\EqualTo(propertyPath: "password", message: "Les mots de passes doivent etre identique.")]
     public $confirm_password;
 
     /**
@@ -66,12 +68,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Purchase::class, mappedBy: 'users', orphanRemoval: true)]
     private Collection $purchases;
 
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $DateNaissance = null;
+
+    #[ORM\Column(type: 'json')]
+    private array $roles = [];
+
+    #[ORM\Column(length: 180, nullable: true)]
+    private ?string $resetToken = null;
+  
+
   
     public function __construct()
     {
         $this->orders = new ArrayCollection();
         $this->addresses = new ArrayCollection();
         $this->purchases = new ArrayCollection();
+     
     }
 
    
@@ -186,13 +199,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
 
-    /**
-     * @see UserInterface
-     */
-    public function getRoles(): array
-    {
-        return ['ROLE_USER'];
-    }
+    
 
 
    
@@ -296,5 +303,46 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getDateNaissance(): ?\DateTimeInterface
+    {
+        return $this->DateNaissance;
+    }
+
+    public function setDateNaissance(\DateTimeInterface $DateNaissance): static
+    {
+        $this->DateNaissance = $DateNaissance;
+
+        return $this;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): self
+{
+    $this->roles = $roles;
+    return $this;
+}
+
+    public function getResetToken(): ?string
+    {
+        return $this->resetToken;
+    }
+
+    public function setResetToken(?string $resetToken): static
+    {
+        $this->resetToken = $resetToken;
+
+        return $this;
+    }
    
 }

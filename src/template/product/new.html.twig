@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Ajout de produit {% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        <div class="card">
+         <div class="card-header">
+            <h5 class="card-title">Ajout de produit</h5>
+          </div>
+          <div class="card-body">
+
+    {{ form_start(form) }}
+     <div class="mb-3">
+        {{ form_label(form.nom) }}
+        {{ form_widget(form.nom) }}
+
+     </div>
+     <div class="mb-3">
+        {{ form_label(form.starting_price) }}
+        {{ form_widget(form.starting_price) }}
+
+     </div>
+    <div class="mb-3">
+        {{ form_label(form.description) }}
+        {{ form_widget(form.description) }}
+
+     </div>
+
+    <div class="mb-3">
+        {{ form_label(form.imageFile) }}
+        {{ form_widget(form.imageFile) }}
+    </div>
+
+    <div class="mb-3">
+        {{ form_label(form.date_creation) }}
+        {{ form_widget(form.date_creation) }}
+    </div>
+         <div class="d-grid gap-2">
+        <button type="submit" class="btn btn-dark">Envoyer</button>
+         </div>
+    {{ form_end(form) }}
+    </div>
+</div>
+</div>
+</div>
+</div>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+{% endblock %}

@@ -16,7 +16,7 @@
                     <form action="{{ path('order_index') }}">                   
                     {% for item in card %}
                     <div class="d-sm-flex align-items-center py-4">
-                        <img src="{{ item.product.image }}" width="150" height="150">
+                        <img src="{{ asset('uploads/images/products/' ~ item.product.image) }}" width="150" height="150">
                         <div class="w-100 pt-1 ps-sm-4">
                             <div class="d-flex">
                                 <div class="me-3">
@@ -65,6 +65,8 @@
     {% endif %}
     
 </main>
+<br />
+<br />
 <br />
 <br />
 <br />

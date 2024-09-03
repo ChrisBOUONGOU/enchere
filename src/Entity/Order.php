@@ -20,11 +20,6 @@ class Order
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $date_creation = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $transporterName = null;
-
-    #[ORM\Column]
-    private ?float $transporterPrice = null;
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $delivery = null;
@@ -76,29 +71,6 @@ class Order
         return $this;
     }
 
-    public function getTransporterName(): ?string
-    {
-        return $this->transporterName;
-    }
-
-    public function setTransporterName(string $transporterName): static
-    {
-        $this->transporterName = $transporterName;
-
-        return $this;
-    }
-
-    public function getTransporterPrice(): ?float
-    {
-        return $this->transporterPrice;
-    }
-
-    public function setTransporterPrice(float $transporterPrice): static
-    {
-        $this->transporterPrice = $transporterPrice;
-
-        return $this;
-    }
 
     public function getDelivery(): ?string
     {

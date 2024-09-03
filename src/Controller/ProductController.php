@@ -6,6 +6,7 @@ use App\Entity\Order;
 use App\Entity\Products;
 use App\Entity\Purchase as PurchaseEntity;
 use App\Form\ContactType;
+use App\Form\ProductsType;
 use App\Repository\PurchaseRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Attribute\Route;
@@ -13,6 +14,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
+
 use Symfony\Component\Mime\Email;
 
 class ProductController extends AbstractController
@@ -24,7 +26,7 @@ class ProductController extends AbstractController
       
         $this->purchaseRepository = $purchaseRepository;
     }
-    #[Route('/product', name: 'app_product')]
+    #[Route('/liste-produits', name: 'app_product')]
     public function index(EntityManagerInterface $entityManager): Response
     {
         $repo = $entityManager->getRepository(Products::class);
@@ -32,6 +34,30 @@ class ProductController extends AbstractController
         return $this->render('product/index.html.twig',[
             'produits' => $produits,
           
+        ]);
+    }
+
+    #[Route('/produit/ajout_nouveau_produit', name: 'product_new')]
+    public function new(Request $request, EntityManagerInterface $em): Response
+    {
+        $product = new Products();
+        $isPlublished = false;
+        $product->setPublished($isPlublished);
+        $form = $this->createForm(ProductsType::class, $product);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->persist($product);
+            $em->flush();
+
+            $this->addFlash('success', 'Votre produit a ete ajoute, une verification sous 48 heures sera fait pour voir si votre produit est conforme.');
+
+            return $this->redirectToRoute('product_new'); // Redirect to a product list page or other page
+        }
+
+        return $this->render('product/new.html.twig', [
+            'form' => $form->createView(),
         ]);
     }
 
@@ -55,18 +81,21 @@ class ProductController extends AbstractController
         $form = $this->createForm(ContactType::class);
        
 
-    $form->handleRequest($request);
+        $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
-        $user = $this->getUser();
+
         $formData = $form->getData();
 
         $address = $formData['email'];
         $content = $formData['message'];
 
+        $toEmail = 'chrisjeffersonboukongou@gmail.com';
+
         $email = (new Email())
-            ->from($formData['email'])
-            ->to('chrisbouk@outlook.fr')
+            ->from($address)
+            ->to($toEmail)
+            ->replyTo($address)
             ->subject('Nouveau message de ' . $formData['nom'])
             ->text($content);
       

@@ -3,6 +3,13 @@ vich_uploader:
 
     mappings:
         products:
-            uri_prefix: /images/products
-            upload_destination: '%kernel.project_dir%/public/images/products'
+            uri_prefix: /home/chris/Documents/enchere/public/uploads/images/products
+            upload_destination: '/home/chris/Documents/enchere/public/uploads/images/products'
+            
+            #uri_prefix: /kunden/homepages/43/d907261394/htdocs/enchere/public/uploads/images/products
+            #upload_destination: /kunden/homepages/43/d907261394/htdocs/enchere/public/uploads/images/products
+            
             namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+
+            delete_on_remove: true
+            delete_on_update: true

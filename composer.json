@@ -14,7 +14,7 @@
         "doctrine/doctrine-bundle": "^2.12",
         "doctrine/doctrine-migrations-bundle": "^3.3",
         "doctrine/orm": "^3.1",
-        "easycorp/easyadmin-bundle": "^4.10",
+        "gregwar/captcha-bundle": "^2.3",
         "stripe/stripe-php": "^14.4",
         "symfony/apache-pack": "^1.0",
         "symfony/asset": "6.4.*",
@@ -26,12 +26,15 @@
         "symfony/google-mailer": "6.4.*",
         "symfony/mailer": "6.4.*",
         "symfony/messenger": "6.4.*",
+        "symfony/process": "6.4.*",
         "symfony/runtime": "6.4.*",
         "symfony/security-bundle": "6.4.*",
+        "symfony/translation-contracts": "^3.5",
         "symfony/twig-bundle": "6.4.*",
+        "symfony/uid": "6.4.*",
         "symfony/validator": "6.4.*",
         "symfony/yaml": "6.4.*",
-        "vich/uploader-bundle": "^2.3"
+        "vich/uploader-bundle": "^2.4"
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.5",

@@ -10,17 +10,21 @@
          <div class="card-header">
            <h5 class="card-title">Page de connexion</h5>
           </div>
+         
           <div class="card-body">
           
 <form action="{{ path('security_login') }}" method="post">
   <div class="mb-3">
-    <label for="exampleInputEmail1">Email address</label>
-    <input type="email" name="_username" class="form-control" id="exampleInputEmail1"  placeholder="Enter email">
+    <label for="exampleInputEmail1">Adresse courriel</label>
+    <input type="email" name="_username" class="form-control" id="exampleInputEmail1"  placeholder="Adresse courriel">
    
   </div>
   <div class="mb-3">
-    <label for="exampleInputPassword1">Password</label>
-    <input type="password" name="_password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+    <label for="exampleInputPassword1">Mot de passe</label>
+    <input type="password" name="_password" class="form-control" id="exampleInputPassword1" placeholder="Mot de passe">
+  </div>
+  <div class="mb-3" style="text-align: center;">
+    <a href="{{ path('app_forgot_password_request') }}" >Mot de passe oublié ? cliquez ici</a>
   </div>
   <div class="d-grid gap-2">
   <button type="submit" class="btn btn-dark">Connexion</button>
@@ -40,6 +44,6 @@
 <br />
 <br />
 <br />
-
-
+<br />
+<br />
 {% endblock %}
